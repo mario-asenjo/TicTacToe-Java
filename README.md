@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="./assets/tres-en-raya-logo.png" alt="Tres en Raya Logo" width="300"/>
+  <img src="tic-tac-toe-icon-2048x2048-g58f0u84.png" alt="Tres en Raya Logo" width="200"/>
 </p>
 
 <h1 align="center">🎮 Tres en Raya en Java 🧠</h1>
