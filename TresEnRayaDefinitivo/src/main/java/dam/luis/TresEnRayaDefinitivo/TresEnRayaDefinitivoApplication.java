@@ -1,8 +1,6 @@
 package dam.luis.TresEnRayaDefinitivo;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Scanner;
 
 public class TresEnRayaDefinitivoApplication {
@@ -22,7 +20,7 @@ public class TresEnRayaDefinitivoApplication {
     	
     	//declaración de hashmap para la concordancia entre las coordenadas en
     	//el tablero y el input del user.
-    	HashMap<Integer, ArrayList<Integer>> concordancias = new HashMap<Integer, ArrayList<Integer>>();
+    	HashMap<Integer, int[]> concordancias = new HashMap<Integer, int[]>();	
     	
     	// establecer el caracter X para el jugador 1
         char j1 = 'X';
@@ -100,11 +98,11 @@ public class TresEnRayaDefinitivoApplication {
      ** Inicializa el hashmap de las coordenadas e input del user 
      ** @return HashMap<> de las coordenadas asociadas a los valores del input
      **/
-    public static HashMap<Integer, ArrayList<Integer>> inicializarConcordancias(char[][] tablero, HashMap<Integer, ArrayList<Integer>> concordancias) {
+    public static HashMap<Integer, int[]> inicializarConcordancias(char[][] tablero, HashMap<Integer, int[]> concordancias) {
     	int c = 1;
     	for (int i = 0; i < tablero.length; i++) {
     		for (int j = 0; j < tablero[0].length; j++) {
-    			ArrayList<Integer> coordenadas = new ArrayList<Integer>(List.of(i,j));
+    			int[] coordenadas = {i,j};
     			concordancias.put(c, coordenadas);
     			c++;
     		}
@@ -145,17 +143,17 @@ public class TresEnRayaDefinitivoApplication {
     
     
     //Función que recoje la lógica de todo el juego
-    public static int[] jugarTurno(char[][] tablero, Scanner myScanner, HashMap<Integer, ArrayList<Integer>> concordancias) {
+    public static int[] jugarTurno(char[][] tablero, Scanner myScanner, HashMap<Integer, int[]> concordancias) {
     	int[] ret = new int[2];
     	int option = -1;
     	do {
         	System.out.print("Introduce un numero para la casilla (1-9): ");
         	option = myScanner.nextInt();
-        	ArrayList<Integer> coordenadas = new ArrayList<Integer>();
+        	int[] coordenadas = new int[2];
         	if (option >= 1 && option <= 9) {
         		coordenadas = concordancias.get(option);
-            	ret[0] = coordenadas.get(0);
-            	ret[1] = coordenadas.get(1);
+            	ret[0] = coordenadas[0];
+            	ret[1] = coordenadas[1];
         	}else {
         		//Si la opción no está entre 1-9 entonces se asigna
         		//-1 para hacer saltar un error en el procesamiento de
@@ -172,28 +170,28 @@ public class TresEnRayaDefinitivoApplication {
     ** Comprueba si ya hay un ganador 
     ** @return true si hay ganador, false si no hay ganador
     **/
-    public static boolean hayGanador(HashMap<Integer, ArrayList<Integer>> concordancias, char[][] tablero) {
+    public static boolean hayGanador(HashMap<Integer, int[]> concordancias, char[][] tablero) {
         // Comprobar filas, columnas y diagonales
-    	ArrayList<ArrayList<Integer>> posicionesGanadoras = new ArrayList<ArrayList<Integer>>(List.of(
-    			new ArrayList<Integer>(List.of(1,2,3)),
-    			new ArrayList<Integer>(List.of(4,5,6)),
-    			new ArrayList<Integer>(List.of(7,8,9)),
-    			new ArrayList<Integer>(List.of(1,5,9)),
-    			new ArrayList<Integer>(List.of(3,5,7)),
-    			new ArrayList<Integer>(List.of(1,4,7)),
-    			new ArrayList<Integer>(List.of(2,5,8)),
-    			new ArrayList<Integer>(List.of(3,6,9))
-    			));
-    	ArrayList<Integer> a = new ArrayList<Integer>();
-    	ArrayList<Integer> b = new ArrayList<Integer>();
-    	ArrayList<Integer> c = new ArrayList<Integer>();
-    	for (ArrayList<Integer> x : posicionesGanadoras) {
-    		a = concordancias.get(x.get(0));
-    		b = concordancias.get(x.get(1));
-    		c = concordancias.get(x.get(2));
-    		char tableroFirstCheck = tablero[a.get(0)][a.get(1)];
-    		char tableroSecondCheck = tablero[b.get(0)][b.get(1)];
-    		char tableroThirdCheck = tablero[c.get(0)][c.get(1)];
+    	int[][] posicionesGanadoras = {
+    			{1,2,3},
+    			{4,5,6},
+    			{7,8,9},
+    			{1,5,9},
+    			{3,5,7},
+    			{1,4,7},
+    			{2,5,8},
+    			{3,6,9}
+		};
+    	int[] a = new int[2];
+    	int[] b = new int[2];
+    	int[] c = new int[2];
+    	for (int[] x : posicionesGanadoras) {
+    		a = concordancias.get(x[0]);
+    		b = concordancias.get(x[1]);
+    		c = concordancias.get(x[2]);
+    		char tableroFirstCheck = tablero[a[0]][a[1]];
+    		char tableroSecondCheck = tablero[b[0]][b[1]];
+    		char tableroThirdCheck = tablero[c[0]][c[1]];
     		if (tableroFirstCheck != ' ' && tableroFirstCheck == tableroSecondCheck && tableroSecondCheck == tableroThirdCheck) {
     			return true;
     		}
